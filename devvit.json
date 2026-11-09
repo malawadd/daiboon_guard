@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
+  "name": "daiboon-guard",
+  "server": {
+    "dir": "dist/server",
+    "entry": "index.cjs"
+  },
+  "menu": {
+    "items": [
+      {"label":"Daiboon decision", "description":"عرض سبب قرار دائبون وحالة الإشعار", "forUserType":"moderator", "location":["post","comment"], "postFilter":"none", "endpoint":"/internal/mod/decision"},
+      {"label":"Daiboon activity", "description":"سجل قرارات دائبون والأخطاء", "forUserType":"moderator", "location":["subreddit"], "postFilter":"none", "endpoint":"/internal/mod/activity"}
+    ]
+  },
+  "forms": {
+    "dgDecision":"/internal/mod/close",
+    "dgActivity":"/internal/mod/activity-submit"
+  },
+  "permissions": {
+    "reddit": {
+      "enable": true,
+      "scope": "moderator"
+    },
+    "redis": true,
+    "http": {
+      "enable": true,
+      "domains": [
+        "api.openai.com"
+      ]
+    }
+  },
+  "triggers": {
+    "onPostCreate": "/internal/post-create",
+    "onPostUpdate": "/internal/post-update",
+    "onCommentCreate": "/internal/comment-create",
+    "onCommentUpdate": "/internal/comment-update",
+    "onPostDelete": "/internal/post-delete",
+    "onCommentDelete": "/internal/comment-delete"
+  },
+  "settings": {
+    "global": {
+      "openaiKey": {
+        "type": "string",
+        "label": "OpenAI API key (secret)",
+        "isSecret": true
+      },
+      "openaiModel": {
+        "type": "string",
+        "label": "OpenAI moderation model",
+        "defaultValue": "gpt-6-luna"
+      }
+    },
+    "subreddit": {
+      "moderationMode": {
+        "type": "select",
+        "label": "Moderation behavior",
+        "options": [
+          {
+            "value": "live",
+            "label": "LIVE: auto-remove violations, review extreme uncertainty"
+          },
+          {
+            "value": "review",
+            "label": "REVIEW: queue all violations, do not remove"
+          },
+          {
+            "value": "audit",
+            "label": "AUDIT: only log; make no moderation changes"
+          }
+        ],
+        "defaultValue": "live"
+      },
+      "imageSamplingRate": {
+        "type": "select",
+        "label": "Optional image AI spot checks",
+        "options": [
+          {
+            "value": "0",
+            "label": "Off (0%, default)"
+          },
+          {
+            "value": "1",
+            "label": "About 1% of posts"
+          },
+          {
+            "value": "5",
+            "label": "About 5% of posts"
+          },
+          {
+            "value": "10",
+            "label": "About 10% of posts"
+          },
+          {
+            "value": "25",
+            "label": "About 25% of posts"
+          },
+          {
+            "value": "100",
+            "label": "All posts"
+          }
+        ],
+        "defaultValue": "0"
+      },
+      "dailyAiChecksLimit": {
+        "type": "number",
+        "label": "Maximum paid AI checks per UTC day (0 disables AI calls)",
+        "defaultValue": 2000
+      }
+    }
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build"
+  },
+  "scheduler": {
+    "tasks": {
+      "recover-moderation": {
+        "endpoint": "/internal/recovery",
+        "cron": "*/1 * * * *"
+      },
+      "recover-unseen": {
+        "endpoint": "/internal/reconcile",
+        "cron": "*/5 * * * *"
+      }
+    }
+  },
+  "dev": {
+    "subreddit": "daiboon_guard_dev"
+  }
+}
