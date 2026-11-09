@@ -18,8 +18,8 @@ For classification, the app sends relevant Reddit post/comment text and discussi
 
 Arabic policy documents:
 
-- [سياسة الخصوصية](https://github.com/malawadd/daiboon_guard/blob/main/docs/08-%D8%B3%D9%8A%D8%A7%D8%B3%D8%A9-%D8%A7%D9%84%D8%AE%D8%B5%D9%88%D8%B5%D9%8A%D8%A9.md)
-- [شروط الاستخدام](https://github.com/malawadd/daiboon_guard/blob/main/docs/09-%D8%B4%D8%B1%D9%88%D8%B7-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AE%D8%AF%D8%A7%D9%85.md)
+- [سياسة الخصوصية](https://github.com/malawadd/daiboon_guard/blob/main/docs/privacy.md)
+- [شروط الاستخدام](https://github.com/malawadd/daiboon_guard/blob/main/docs/terms.md)
 
 ## Install and configure
 
